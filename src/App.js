@@ -22,10 +22,10 @@ class App extends Component {
   }
 
   rewind() {
-    this.setState(({ textarea }) => ({
+    this.setState({
       activeList: {},
       list: this.getList(),
-    }), () => {
+    }, () => {
       if (this.timer) {
         clearInterval(this.timer);
       }
