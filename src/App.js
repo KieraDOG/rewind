@@ -119,7 +119,7 @@ class App extends Component {
               <Slider
                 value={interval / 1000 * 100}
                 onChange={(_, value) => this.setState({
-                  interval: parseInt(value / 100 * 10000),
+                  interval: parseInt(value / 100 * 1000),
                 })}
               />
               <br />
