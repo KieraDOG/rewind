@@ -10,8 +10,8 @@ const initialState = {
   textarea: initialTextarea,
   step: 1,
   interval: 300,
-  result: '',
   activeList: {},
+  list: [],
 };
 
 class App extends Component {
@@ -24,15 +24,15 @@ class App extends Component {
   rewind() {
     this.setState(({ textarea }) => ({
       activeList: {},
-      result: textarea,
+      list: this.getList(),
     }), () => {
       if (this.timer) {
         clearInterval(this.timer);
       }
 
-      const { interval } = this.state;
+      const { interval, list } = this.state;
 
-      this.active = this.toArray().length;
+      this.active = list.length;
       this.timer = setInterval(() => {
         this.setState(({ activeList }) => {
           const newActiveList = {...activeList, [this.active]: true};
@@ -52,16 +52,16 @@ class App extends Component {
     });
   }
 
-  toArray() {
-    const { result, step } = this.state;
+  getList() {
+    const { textarea, step } = this.state;
 
-    if (result.length < step) {
-      return [result];
+    if (textarea.length < step) {
+      return [textarea];
     }
 
     const regex = new RegExp(`.{${step}}`, 'g');
 
-    return result.match(regex);
+    return textarea.match(regex);
   }
 
   reset() {
@@ -79,7 +79,7 @@ class App extends Component {
   }
 
   render() {
-    const { textarea, step, interval, activeList } = this.state;
+    const { textarea, step, interval, activeList, list } = this.state;
 
     return (
       <React.Fragment>
@@ -142,7 +142,7 @@ class App extends Component {
             </div>
           </form>
           <div className="result">
-            {this.toArray().map((t, index) => (
+            {list.map((t, index) => (
               <span 
                 className={activeList[index] ? 'result--active' : 'result--inactive'}
                 key={index}
