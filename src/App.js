@@ -10,17 +10,15 @@ const initialState = {
   textarea: initialTextarea,
   step: 1,
   interval: 300,
+  result: '',
+  activeList: {},
 };
 
 class App extends Component {
   constructor(props) {
     super(props);
     
-    this.state = {
-      ...initialState,
-      activeList: {},
-      result: '',
-    };
+    this.state = initialState;
   }
 
   rewind() {
@@ -64,6 +62,14 @@ class App extends Component {
     const regex = new RegExp(`.{${step}}`, 'g');
 
     return result.match(regex);
+  }
+
+  reset() {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
+
+    this.setState(initialState);
   }
 
   componentWillUnmount() {
@@ -127,7 +133,12 @@ class App extends Component {
               >
                 Rewind
               </Button>
-              <Button variant="contained">Reset</Button>
+              <Button 
+                variant="contained"
+                onClick={() => this.reset()}
+              >
+                Reset
+              </Button>
             </div>
           </form>
           <div className="result">
